@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type='text/css' href="darktheme.css" id='csslink'>
+        <link type='text/javascript' href="makethingswork.js">
+        <script type='text/javascript'>
+    function changeCSS(filename) {
+        var link = document.getElementById('csslink');
+        link.setAttribute('href', filename + '.css');
+    }
+
+    function changeTheme(slider) {
+        if (slider.checked === true) {
+            changeCSS('lighttheme');
+        } else {
+            changeCSS('darktheme');
+        }
+    }
+    </script>
+        <title>Charger</title>
+    </head>
+
+    <body>
+        <div class='container' style="height: 100%">
+            <div class='container' id='header'>
+                <span id='title'>Charger</span><span id='version'>v0.0</span>
+            </div>
+            <div class='container' id='game'>
+                <div class='slidercontainer' id='themeslider'>        
+                    <span class='smalltext'>Turn on the lights</span>
+                    <label class='switch'>
+                        <input type="checkbox" onchange="changeTheme(this)">
+                        <span class='slider round'></span>
+                    </label>
+                </div>
+                <a class='resourcetab' href="energytab.html" style='top: 20px'>Energy</a>
+            </div>
+        </div>
+    </body>
+</html

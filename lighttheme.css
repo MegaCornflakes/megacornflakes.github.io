@@ -1,0 +1,134 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Courier New';
+    color: #fdfdfd;
+    font-size: 16px;
+    background-color: #2d2d2d;
+    margin: 0px;
+}
+
+.container {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+/*Slider*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 15px;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+.slider:before {
+      position: absolute;
+    content: "";
+    height: 11px;
+    width: 11px;
+    top: 2px;
+    left: 2px;
+    background-color: #fff;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+.slider.round {
+    border-radius: 8px;
+}
+
+.slider.round:before {
+    border-radius: 8px;
+}
+
+input:checked + .slider {
+    background-color: #00997a;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #00997a;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    transform: translateX(16px);
+}
+/*End Slider*/
+
+.slidercontainer {
+    height: 15px;
+}
+
+.resourcetab {
+    border: solid 3px #00997a;
+    border-radius: 12px;
+    padding: 12px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    width: 100px;
+    text-align: center;
+    position: absolute;
+}
+
+a.resourcetab, #title {
+    color: inherit;
+    text-decoration: none;
+}
+
+.smalltext {
+    font-size: 13px;
+    vertical-align: text-top;
+}
+
+
+
+#header {
+    text-align: center;
+    background-color: #00997a;
+    border-radius: 16px;
+    width: 100%;
+    height: 7.5%
+}
+
+#game {
+    position: absolute;
+    bottom: 0;
+    height: 92.5%;
+    width: 100%;
+}
+
+#title {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+#themeslider {
+    position: absolute;
+    bottom: 2px;
+}
+
+#version {
+    font-size: 12px;
+}
