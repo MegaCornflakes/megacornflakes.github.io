@@ -87,7 +87,8 @@ input:checked + .slider:before {
     padding-top: 24px;
     padding-bottom: 24px;
     border: solid 4px #00997a;
-    width: 18%;
+    width: 16%;
+    height: 75px;
     text-align: center;
     position: absolute;
 }
@@ -97,25 +98,36 @@ a.resourcetab, #title {
     text-decoration: none;
 }
 
+.resourcecountcontainer {
+    margin: 42px;
+    text-align: center;
+}
+
 .smalltext {
     font-size: 13px;
     vertical-align: text-top;
 }
 
-
+.resourcecount {
+    font-size: 48px;
+    color: #00997a;
+    vertical-align: bottom;
+    line-height: 36px;
+}
 
 #header {
     text-align: center;
     background-color: #00997a;
     border-radius: 16px;
     width: 100%;
-    height: 7.5%
+    height: 70px;
+    line-height: 70px;
 }
 
 #game {
     position: absolute;
     bottom: 0;
-    height: 92.5%;
+    top: 80px;
     width: 100%;
 }
 
@@ -127,7 +139,6 @@ a.resourcetab, #title {
     right: 0;
     border: solid 4px #00997a;
     border-radius: 12px;
-    border-top-left-radius: 0;
 }
 
 #title {
