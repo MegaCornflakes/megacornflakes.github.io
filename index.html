@@ -1,41 +1,92 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" type='text/css' href="darktheme.css" id='csslink'>
-        <link type='text/javascript' href="makethingswork.js">
-        <script type='text/javascript'>
-    function changeCSS(filename) {
-        var link = document.getElementById('csslink');
-        link.setAttribute('href', filename + '.css');
-    }
+	<head>
+		<link rel="stylesheet" href="./style.css" />
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"
+			integrity="sha512-3RlxD1bW34eFKPwj9gUXEWtdSMC59QqIqHnD8O/NoTwSJhgxRizdcFVQhUMFyTp5RwLTDL0Lbcqtl8b7bFAzog=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script>
+			const canvasWidth = window.innerWidth - 68
+			const canvasHeight = window.innerHeight - 68
 
-    function changeTheme(slider) {
-        if (slider.checked === true) {
-            changeCSS('lighttheme');
-        } else {
-            changeCSS('darktheme');
-        }
-    }
-    </script>
-        <title>Charger</title>
-    </head>
+			const s = (p) => {
+				let oldX = 0
+				let oldY = 0
+				let resX = 30
+				let resY = 30
+				const freq = 3
+				let t = 0
 
-    <body>
-        <div class='container' style="height: 100%">
-            <div class='container' id='header'>
-                <span id='title'>Charger</span><span id='version'>v0.0</span>
-            </div>
-            <div class='container' id='game'>
-                <div class='slidercontainer' id='themeslider'>        
-                    <span class='smalltext'>Turn on the lights</span>
-                    <label class='switch'>
-                        <input type="checkbox" onchange="changeTheme(this)">
-                        <span class='slider round'></span>
-                    </label>
-                </div>
-                <a class='resourcetab' href="energytab.html" style='top: 20px'>Energy</a>
-                <a class='resourcetab' href="resourcetab.html" style='top: 100px'>Resources</a>
-            </div>
-        </div>
-    </body>
+				p.setup = () => {
+					p.createCanvas(canvasWidth, canvasHeight)
+					p.colorMode(p.HSL, 100)
+					if (p.width > p.height) {
+						resY = resX * (p.height / p.width)
+					} else {
+						resX = resY * (p.width / p.height)
+					}
+				}
+
+				p.draw = () => {
+					p.background(0)
+					for (let y = -1; y < resY; y++) {
+						for (let x = -1; x < resX; x++) {
+							const calcX = (ax, ay) => {
+								return (
+									((p.sin((2 * p.PI * ay * freq) / resX + 2 * p.PI * t) +
+										1 +
+										ax * 2) *
+										p.width) /
+									resX /
+									2
+								)
+							}
+							const calcY = (ax, ay) => {
+								return (
+									((p.sin((2 * p.PI * ax * freq) / resY + 2 * p.PI * t) +
+										1 +
+										ay * 2) *
+										p.height) /
+									resY /
+									2
+								)
+							}
+
+							p.stroke((((x + 1) / resX + t) % 1) * 100, 90, 75)
+							p.line(calcX(x, y), calcY(x, y), calcX(x + 1, y), calcY(x + 1, y))
+							p.line(calcX(x, y), calcY(x, y), calcX(x, y + 1), calcY(x, y + 1))
+						}
+					}
+					t +=
+						0.001 *
+							p.sqrt(
+								(p.dist(oldX, oldY, p.mouseX, p.mouseY) / p.width) *
+									resX *
+									p.getTargetFrameRate()
+							) +
+						0.004
+					t = t % 1
+					oldX = p.mouseX
+					oldY = p.mouseY
+				}
+			}
+
+			let sketch = new p5(s, 'sketch')
+			sketch.canvas.style.width = '100%'
+			sketch.canvas.style.height = '100%'
+			sketch.canvas.style.position = 'fixed'
+			sketch.canvas.style.top = '0'
+			sketch.canvas.style.left = '0'
+		</script>
+		<title>cornflakeclub</title>
+	</head>
+
+	<body>
+		<div id="universe">
+			<div id="sketch"></div>
+		</div>
+	</body>
 </html>
