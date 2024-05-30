@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutel Toss</title>
+    <style>
+      body,
+      html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: #f0f0f0;
+      }
+
+      body {
+        background-image: url("https://images.unsplash.com/photo-1515895309288-a3815ab7cf81?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=mitch-harris-cPZ21gvclO8-unsplash.jpg&w=2400");
+      }
+
+      #container {
+        width: 80vw;
+        height: 80vh;
+        background-color: rgb(0 0 0 / 0.7);
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 0 80px 0 rgb(0 0 0 / 0.5);
+        border-radius: 8px;
+      }
+      #square {
+        width: 100px;
+        height: 100px;
+        background: url("https://cdn.7tv.app/emote/652887be59e9f75d6819d8da/4x.webp")
+          no-repeat center center/cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(50px, 50px);
+        cursor: grab;
+      }
+
+      #stopButton {
+        padding: 20px 30px;
+        font-family: "Roboto", sans-serif;
+        font-size: 20px;
+        background: linear-gradient(#e7ebe1, #cdd1cb);
+        border-radius: 16px;
+        border-style: solid;
+        border-width: 2px 0;
+        border-top-color: #f5f9ef;
+        border-bottom-color: #bdc1bb;
+        box-shadow: 0 4px 16px -8px rgba(0, 0, 0, 0.3);
+        transition: box-shadow 0.2s;
+      }
+
+      #stopButton:hover {
+        transition: box-shadow 0.05s ease-out;
+        box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+
+      #stopButton:active {
+        box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <button id="stopButton">Stop Him</button>
+    <div id="container">
+      <div id="square"></div>
+    </div>
+
+    <script>
+      const square = document.getElementById("square");
+      const container = document.getElementById("container");
+      let isDragging = false;
+      let grabX = 0,
+        grabY = 0;
+      let speedX = 0,
+        speedY = 0;
+      let rotation = 0,
+        rotationSpeed = 0;
+      // let lastMouseX = 0,
+      // lastMouseY = 0;
+      let posX = container.clientWidth / 2 - square.clientWidth / 2,
+        posY = container.clientHeight / 2 - square.clientHeight / 2;
+
+      square.style.transform = `translate(${posX}px, ${posY}px)`;
+
+      square.addEventListener("mousedown", (e) => {
+        let rect = square.getBoundingClientRect();
+        isDragging = true;
+        grabX = e.clientX;
+        grabY = e.clientY;
+        // lastMouseX = grabX;
+        // lastMouseY = grabY;
+        speedX = 0;
+        speedY = 0;
+        square.style.cursor = "grabbing";
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+          // lastMouseX = e.clientX;
+          // lastMouseY = e.clientY;
+
+          let rect = square.getBoundingClientRect();
+          let containerRect = container.getBoundingClientRect();
+
+          speedX = e.clientX - grabX;
+          speedY = e.clientY - grabY;
+
+          let newX = posX + speedX;
+          let newY = posY + speedY;
+
+          if (newX < 0) {
+            newX = 0;
+            speedX = -speedX;
+          } else if (
+            newX + rect.width >
+            containerRect.right - containerRect.left
+          ) {
+            newX = containerRect.right - containerRect.left - rect.width;
+            speedX = -speedX;
+          }
+
+          if (newY < 0) {
+            newY = 0;
+            speedY = -speedY;
+          } else if (
+            newY + rect.height >
+            containerRect.bottom - containerRect.top
+          ) {
+            newY = containerRect.bottom - containerRect.top - rect.height;
+            speedY = -speedY;
+          }
+
+          square.style.transform = `translate(${newX}px, ${newY}px) rotate(${rotation}deg)`;
+          grabX += newX - posX;
+          grabY += newY - posY;
+          posX = newX;
+          posY = newY;
+        }
+      });
+
+      document.addEventListener("mouseup", (e) => {
+        let rect = square.getBoundingClientRect();
+        isDragging = false;
+        square.style.cursor = "grab";
+        if (
+          e.clientX > rect.left &&
+          e.clientX < rect.right &&
+          e.clientY > rect.top &&
+          e.clientY < rect.bottom
+        ) {
+          // ang momentum positive if speedY+ on left, speedY- on right, speedX+ on up, or speedX- on down
+          rotationSpeed =
+            (speedY * (grabX - rect.left - rect.width / 2) -
+              speedX * (grabY - rect.top - rect.height / 2)) /
+            70;
+          moveSquare();
+        }
+      });
+
+      function moveSquare() {
+        if (!isDragging) {
+          let rect = square.getBoundingClientRect();
+          let containerRect = container.getBoundingClientRect();
+
+          let newX = posX + speedX;
+          let newY = posY + speedY;
+          rotation += rotationSpeed;
+
+          if (newX < 0) {
+            newX = 0;
+            speedX = -speedX;
+          } else if (
+            newX + rect.width >
+            containerRect.right - containerRect.left
+          ) {
+            newX = containerRect.right - containerRect.left - rect.width;
+            speedX = -speedX;
+          }
+
+          if (newY < 0) {
+            newY = 0;
+            speedY = -speedY;
+          } else if (
+            newY + rect.height >
+            containerRect.bottom - containerRect.top
+          ) {
+            newY = containerRect.bottom - containerRect.top - rect.height;
+            speedY = -speedY;
+          }
+
+          square.style.transform = `translate(${newX}px, ${newY}px) rotate(${rotation}deg)`;
+          posX = newX;
+          posY = newY;
+
+          speedX *= 0.99;
+          speedY *= 0.99;
+          rotationSpeed *= 0.99;
+
+          if (Math.abs(speedX) > 0.01 || Math.abs(speedY) > 0.01) {
+            requestAnimationFrame(moveSquare);
+          }
+        }
+      }
+
+      document
+        .getElementById("stopButton")
+        .addEventListener("mousedown", () => {
+          speedX = 0;
+          speedY = 0;
+        });
+    </script>
+  </body>
+</html>
